@@ -8,3 +8,6 @@ This repository will contain a Python-based processing pipeline designed to auto
 ## Data Description
 * **LiDAR Point Clouds:** Raw unstructured point clouds exported as `.las`/`.laz` (or `.e57`) files containing $(X, Y, Z)$ coordinates, intensity, and surface normals.
 * **Trajectory Data:** Time-stamped spatial trajectory files ($X, Y, Z$) representing the exact path of the mobile scanner during capture.
+
+## Data Release
+*(Placeholder)*
