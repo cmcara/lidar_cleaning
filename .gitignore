@@ -1,3 +1,21 @@
+# ==============================================================================
+# Project Specific Rules (LiDAR Data & Geospatial Checks)
+# ==============================================================================
+data/
+*.las
+*.laz
+*.e57
+*.ply
+*.csv
+*.xlsx
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+.DS_Store
+Thumbs.db
+
+# ==============================================================================
+# Python Template GitIgnore
+# ==============================================================================
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
