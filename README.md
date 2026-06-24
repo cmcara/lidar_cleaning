@@ -15,7 +15,8 @@ This repository will contain a Python-based processing pipeline designed to auto
 ### What is currently working:
 * [x] Core directory structure and repository organization.
 * [x] Environment dependency definitions (`environment.yml`).
-* [x] Initial exploratory notebook placeholder.
+* [x] Introductory steps to ingest and visualize .e57 point clouds.
+* [x] Initial classification for wall and ceiling/floor recognition.
 
 ### What is NOT yet ready:
 * [ ] Active open-source data release links (Pending alignment with corporate data privacy/anonymization guidelines).
