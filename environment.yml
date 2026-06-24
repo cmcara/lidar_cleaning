@@ -6,6 +6,10 @@ channels:
 dependencies:
   - python=3.11
   - pip
+  - xerces-c          # to run pye57
+  - open3d            # 3d objects
+
+
   
   # Core scientific python
   - numpy
