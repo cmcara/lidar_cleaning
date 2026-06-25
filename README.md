@@ -12,15 +12,18 @@ This repository will contain a Python-based processing pipeline designed to auto
 ## Project Status & Execution Instructions
 > **Status (June 2026):** Project repository initialized for course tracking. Pipeline logic is currently in the testing phase. Previous LiDAR workflow included for reference.
 
-### What is currently working:
+### Currently working:
 * [x] Core directory structure and repository organization.
 * [x] Environment dependency definitions (`environment.yml`).
 * [x] Introductory steps to ingest and visualize .e57 point clouds.
 * [x] Initial classification for wall and ceiling/floor recognition.
+* [x] Recognition of doors and extension of wall planes over mirrors and small windows.
 
-### What is NOT yet ready:
-* [ ] Active open-source data release links (Pending alignment with corporate data privacy/anonymization guidelines).
-* [ ] Executable processing scripts.
+
+### Not yet ready:
+* [ ] Trajectory analysis per point for ray-tracing.
+* [ ] Filtering window and mirror points.
+* [ ] Clean and well organized GitHub layout.
 
 ### Running the Workflow (Future Implementation)
 Once development begins, execute the following commands to spin up the required Python environment:
