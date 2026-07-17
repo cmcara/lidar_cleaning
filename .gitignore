@@ -12,6 +12,7 @@ data/
 */.ipynb_checkpoints/*
 .DS_Store
 Thumbs.db
+scratch.ipynb
 
 # ==============================================================================
 # Python Template GitIgnore
