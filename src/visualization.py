@@ -1,3 +1,12 @@
+"""
+This is the src file containing all of my plotting and visualization functions for the workflow.
+With such spatially sensitive data, I found it very helpful to visualize almost every major step as the data was classified.
+If/else statements are core to plotting so much data and allow for display limits to be easily set for various scenarios.
+A number of the visualization functions have overlapping features, but I found it more straitforward to add new elements to new functions.
+Ideally there would be one function to plot plane classification with a toggle for 'walls vs floors' and 'all planes separately colored'.
+"""
+
+
 import random
 import numpy as np
 import plotly.graph_objects as go

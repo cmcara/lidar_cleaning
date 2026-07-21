@@ -1,3 +1,10 @@
+"""
+This is the first major src file that I use to keep the tuning workflow as clean and iterative as possible. 
+Once the .e57 point cloud is loaded, this file contains a number of functions to voxelize the point cloud and draw out major planes.
+This file also contains a function for classifying gaps as doors or not, and tweaking the parameters for the algorithms via functions is very helpful.
+Modularizing the workflow like this helps keep the main notebook clean for testing while still being easy to tweak and customize.
+"""
+
 import numpy as np
 import open3d as o3d
 
