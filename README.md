@@ -20,16 +20,25 @@
 ## Repository Layout
 ```text
 lidar_cleaning/
-├── data/                       # Local raw scan data (.e57) - Git-ignored
+├── data/                       # Local raw scan data (.e57)
+│   └── .keep                   # Placeholder file
+│
 ├── notebooks/                  # Interactive experimentation & parameter tuning
 │   └── test_params.ipynb       # Main evaluation workspace
+│
 ├── src/                        # Modular processing engine
 │   ├── io.py                   # .e57 file readers & metadata parsers
 │   ├── geometry.py             # RANSAC wall fitting & trajectory filters
-│   ├── visualization.py        # 3D Plotly & WebGL slice viewers
-│   └── ghost_detection.py      # Ray-tracing occlusion implementations
+│   ├── ghost_detection.py      # Ray-tracing occlusion implementations
+│   └── visualization.py        # 3D Plotly & WebGL slice viewers
+│
+├── .gitignore                  # git commit configuration
 ├── environment.yaml            # Conda environment definition
-└── pyproject.toml              # Editable package configuration
+├── LICENSE                     # MIT License information
+├── pyproject.toml              # Editable package configuration
+├── README.md                   # project information and organization
+└── setup.py                    # src pathing configuration
+
 ```
 
 ## Quickstart & Setup
