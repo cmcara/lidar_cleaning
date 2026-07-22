@@ -1,6 +1,7 @@
 # Open-Source Automated Reflectance Processing for Interior LiDAR Point Clouds *(v0.01 - Testing)*
 
-![DOI]  *(Placeholder)*
+
+[![DOI](https://zenodo.org/badge/1277017022.svg)](https://doi.org/10.5281/zenodo.21497232)
 
 ## Project Description
 > This repository contains a Python-based processing workflow designed to test the parameters for a process to automate the detection and removal of mirror-induced "ghost points" in indoor mobile LiDAR scanning data. Current industry-standard workflows involve manually clipping and sifting through point clouds for bad data and could be significantly expedited through automation. This workflow is currently in the testing and fine-tuning stage as I evaluate algorithm performance across various indoor environments.
