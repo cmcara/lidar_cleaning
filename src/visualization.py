@@ -785,13 +785,23 @@ def plot_interactive_top_down_slice(
 ):
     """
     Calculates Z bounds automatically and launches the interactive top-down slider widget.
-    If 'step' is not provided, it defaults to 'slice_thickness' for gapless slicing.
+    Defaults slider value to the elevation slice containing the highest density of points.
     """
     if step is None:
         step = slice_thickness
 
     z_min = float(np.min(raw_points[:, 2]))
     z_max = float(np.max(raw_points[:, 2]))
+
+    # Compute fast 1D histogram along Z to locate the most populated slice center
+    num_bins = max(1, int(np.ceil((z_max - z_min) / step)))
+    counts, bin_edges = np.histogram(
+        raw_points[:, 2], 
+        bins=num_bins, 
+        range=(z_min, z_min + num_bins * step)
+    )
+    best_bin = np.argmax(counts)
+    default_z = round(float((bin_edges[best_bin] + bin_edges[best_bin + 1]) / 2.0), 2)
 
     interact(
         lambda z: visualize_fixed_top_down_slice(
@@ -805,7 +815,7 @@ def plot_interactive_top_down_slice(
             min=z_min,
             max=z_max,
             step=step,
-            value=round((z_min + z_max) / 2.0, 2),
+            value=default_z,  # Defaults to densest floor/wall level automatically
             description="Z-Height (m)",
             layout={'width': '600px'},
             continuous_update=False,
