@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "point_cloud_pipeline"
+version = "0.0.1"
+description = "3D Point Cloud Segmentation and Occlusion Pipeline"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy",
+    "scipy",
+    "open3d",
+    "pye57",
+    "plotly",
+    "ipywidgets",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]

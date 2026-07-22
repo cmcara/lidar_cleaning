@@ -1,4 +1,4 @@
-name: earth-analytics-python
+name: point-cloud-pipeline
 channels:
   - conda-forge
   - defaults
@@ -6,80 +6,21 @@ channels:
 dependencies:
   - python=3.11
   - pip
-  - xerces-c          # to run pye57
-  - open3d            # 3d objects
-
-
   
-  # Core scientific python
+  # C++ binary dependency for e57 file reading
+  - xerces-c
+
+  # 3D & Scientific Core
+  - open3d
   - numpy
-  - pandas
   - scipy
-  - dask
 
-  # Geospatial libraries
-  # Coordinates and CRSs
-  - pyproj>=3.0
-  - geopy
-  - cartopy
-  # Vector data
-  - geopandas
-  - geojson
-  - pyogrio
-  # Raster data
-  - xarray
-  - h5py
-  - netcdf4
-  - rioxarray>=0.3.0
-  - xarray-spatial
-  - regionmask
-  
-  # Interactive computing
-  - ipython
+  # Interactive Notebook Visualization
+  - plotly
+  - ipywidgets
   - jupyterlab
-  - notebook
-  - tqdm
-  - nbresuse
-  - papermill
-  - nbclean
-  
-  # ML and modeling
-  - scikit-learn
-  - scikit-fuzzy
 
-  # Data access
-  - earthpy
-  - earthaccess
-  - pystac-client
-  - adlfs
-  - dataretrieval
-  - osmnx
-  
-  # Plotting
-  # Matplotlib
-  - matplotlib
-  - nc-time-axis
-  - descartes
-  - contextily
-  - seaborn
-  # Holoviews
-  # --- Avoid compatibility issues with bokeh and new holoviews
-  - holoviews<=1.19
-  - hvplot
-  - geoviews>=1.10
-  - selenium
-  - phantomjs
-  - jupyter_bokeh
-  # Folium
-  - folium
-  
-  # QA
-  - flake8
-  - flake8-import-order
-  - black
-  - autopep8
-  - pydocstyle
-  - nbqa
-
+  # Python Package Manager
   - pip:
-    - pygbif
+    - pye57
+    - -e .  # Runs editable install automatically when building the environment
