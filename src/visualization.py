@@ -514,23 +514,19 @@ def plot_reconstructed_walls(
     fig.show(config={"displayModeBar": False})
 
 
+
 def plot_trajectory_and_walls(
     trajectory_points: np.ndarray,
     wall_rectangles: list[dict],
+    filtered_wall_rectangles: list[dict] | None = None,
 ):
     """
-    Plots the scanner trajectory path along with wireframe outlines of reconstructed wall panels.
-
-    Args:
-        trajectory_points (np.ndarray): Array of shape (N, 3) containing scanner waypoints.
-        wall_rectangles (list[dict]): List of wall panel dictionaries with 'corners' key.
-
-    Returns:
-        None
+    Plots the mobile scanner trajectory path along with wireframe outlines of reconstructed wall panels.
+    If filtered_wall_rectangles is provided, overlays kept walls in green on top of all walls in red.
     """
     fig = go.Figure()
 
-    # Plot the continuous scanner trajectory path
+    # Plot continuous mobile trajectory path
     if len(trajectory_points) > 0:
         fig.add_trace(go.Scatter3d(
             x=trajectory_points[:, 0],
@@ -542,7 +538,8 @@ def plot_trajectory_and_walls(
             name='Scanner Trajectory'
         ))
 
-    # Plot the wireframe outlines of reconstructed wall panels
+    # Plot all wall panels (Red if filtering, Gray if standard view)
+    base_color = 'rgba(239, 68, 68, 0.5)' if filtered_wall_rectangles is not None else 'rgba(120, 120, 120, 0.6)'
     for wall in wall_rectangles:
         corners = wall['corners']
         closed_loop = np.vstack([corners, corners[0]])
@@ -551,9 +548,23 @@ def plot_trajectory_and_walls(
             y=closed_loop[:, 1],
             z=closed_loop[:, 2],
             mode='lines',
-            line=dict(color='rgba(120, 120, 120, 0.6)', width=2),
+            line=dict(color=base_color, width=2),
             showlegend=False
         ))
+
+    # Overlay filtered (kept) wall panels on top in Green
+    if filtered_wall_rectangles is not None:
+        for wall in filtered_wall_rectangles:
+            corners = wall['corners']
+            closed_loop = np.vstack([corners, corners[0]])
+            fig.add_trace(go.Scatter3d(
+                x=closed_loop[:, 0],
+                y=closed_loop[:, 1],
+                z=closed_loop[:, 2],
+                mode='lines',
+                line=dict(color='rgba(16, 185, 129, 1.0)', width=4),
+                showlegend=False
+            ))
 
     fig.update_layout(
         scene=dict(
@@ -569,13 +580,13 @@ def plot_trajectory_and_walls(
     fig.show()
 
 
-
 def visualize_classification_progress(
     down_points: np.ndarray,
     ghost_mask: np.ndarray,
     trajectory_points: np.ndarray,
     wall_panels: list[dict],
     max_render_pts: int = 150000,
+    show_ghosts: bool = True,
 ):
     """
     Generates a 3D Plotly visualization mapping clean points, ghost points, 
@@ -588,6 +599,7 @@ def visualize_classification_progress(
         wall_panels (list[dict]): List of wall panel dictionaries with 'corners' key.
         max_render_pts (int, optional): Maximum total render points across clean and ghost points. 
             Defaults to 150000.
+        show_ghosts (bool, optional): Whether to render detected ghost points. Defaults to True.
 
     Returns:
         None
@@ -610,23 +622,23 @@ def visualize_classification_progress(
         return pts[indices]
     
     disp_clean = sample_pts(clean_pts, sample_rate)
-    disp_ghost = sample_pts(ghost_pts, sample_rate)
+    disp_ghost = sample_pts(ghost_pts, sample_rate) if show_ghosts else np.array([])
     
     # 1. Plot Validated Clean Points (Soft Grey/Green)
     if len(disp_clean) > 0:
         fig.add_trace(go.Scatter3d(
             x=disp_clean[:, 0], y=disp_clean[:, 1], z=disp_clean[:, 2],
             mode='markers',
-            marker=dict(size=1.2, color='rgb(200, 200, 200)', opacity=0.4),
+            marker=dict(size=1, color='rgb(200, 200, 200)', opacity=0.4),
             name=f'Validated Clean ({len(clean_pts):,} pts)'
         ))
         
-    # 2. Plot Detected Ghost Points (Bright Red)
-    if len(disp_ghost) > 0:
+    # 2. Plot Detected Ghost Points (Bright Red) - Only rendered if show_ghosts=True
+    if show_ghosts and len(disp_ghost) > 0:
         fig.add_trace(go.Scatter3d(
             x=disp_ghost[:, 0], y=disp_ghost[:, 1], z=disp_ghost[:, 2],
             mode='markers',
-            marker=dict(size=1.8, color='rgb(239, 68, 68)', opacity=0.85),
+            marker=dict(size=1, color='rgb(239, 68, 68)', opacity=0.85),
             name=f'Detected Ghosts ({len(ghost_pts):,} pts)'
         ))
         
@@ -670,12 +682,14 @@ def visualize_classification_progress(
     fig.show(config={"displayModeBar": False})
 
 
+
 def visualize_fixed_top_down_slice(
     z_center: float,
     raw_points: np.ndarray,
     final_mask: np.ndarray,
     slice_thickness: float = 0.25,
     max_slice_points: int = 300000,
+    show_ghosts: bool = True,
 ):
     """
     Renders a fixed-viewport top-down 2D floor plan slice using high-performance WebGL.
@@ -731,7 +745,7 @@ def visualize_fixed_top_down_slice(
             name='Clean Building Assets'
         ))
         
-    if len(ghost_pts) > 0:
+    if show_ghosts and len(ghost_pts) > 0:
         fig.add_trace(go.Scattergl(
             x=ghost_pts[:, 0],
             y=ghost_pts[:, 1],
@@ -767,6 +781,7 @@ def plot_interactive_top_down_slice(
     final_mask: np.ndarray,
     slice_thickness: float = 0.25,
     step: float | None = None,
+    show_ghosts: bool = True,
 ):
     """
     Calculates Z bounds automatically and launches the interactive top-down slider widget.
@@ -784,6 +799,7 @@ def plot_interactive_top_down_slice(
             raw_points=raw_points,
             final_mask=final_mask,
             slice_thickness=slice_thickness,
+            show_ghosts=show_ghosts,
         ),
         z=FloatSlider(
             min=z_min,

@@ -225,3 +225,44 @@ def reconstruct_walls_and_doors(
 
     print(f"Generated {len(segmented_wall_rectangles)} true angled wall panels.")
     return segmented_wall_rectangles, detected_doorways, floor_z
+
+
+def filter_walls_by_trajectory(
+    wall_panels: list[dict],
+    scanner_poses: np.ndarray,
+    max_distance: float = 12.0
+) -> list[dict]:
+    """
+    Filters out wall panels whose 4 corners are all further than max_distance 
+    from any scanner trajectory waypoint.
+
+    Args:
+        wall_panels (list[dict]): Reconstructed wall panel dictionaries.
+        scanner_poses (np.ndarray): Matrix of scanner positions, shape (M, 3) or (3,).
+        max_distance (float): Maximum allowed distance in meters from the nearest scanner pose.
+
+    Returns:
+        list[dict]: Subset of wall panels within acceptable range of the scan trajectory.
+    """
+    poses = np.atleast_2d(scanner_poses)
+    valid_panels = []
+
+    for panel in wall_panels:
+        corners = panel["corners"]  # Shape (4, 3)
+        
+        # Compute Euclidean distance matrix between all 4 corners and all scanner poses: shape (4, M)
+        # distances[i, j] is the distance from corner i to pose j
+        distances = np.linalg.norm(corners[:, np.newaxis, :] - poses[np.newaxis, :, :], axis=2)
+        
+        # Find minimum distance to ANY scanner pose for each corner: shape (4,)
+        min_corner_distances = np.min(distances, axis=1)
+        
+        # Keep the panel if AT LEAST ONE corner is within max_distance of any scanner position
+        if np.any(min_corner_distances <= max_distance):
+            valid_panels.append(panel)
+
+    dropped_count = len(wall_panels) - len(valid_panels)
+    print(f"Trajectory Filter: Retained {len(valid_panels)}/{len(wall_panels)} walls "
+          f"(Dropped {dropped_count} panels further than {max_distance}m from scan poses).")
+
+    return valid_panels
