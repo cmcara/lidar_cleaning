@@ -1,37 +1,17 @@
-# Reflectance Processing for Interior LiDAR Point Clouds *(In Progress)*
+# Open-Source Automated Reflectance Processing for Interior LiDAR Point Clouds *(In Testing)*
 
 ![DOI]  *(Placeholder)*
 
 ## Project Description
-This repository will contain a Python-based processing pipeline designed to automate the detection and removal of mirror-induced "ghost points" in indoor mobile mapping LiDAR data. Instead of manually clipping out bad data from point clouds, this workflow will ingest a point cloud and trajectory path to programatically idetify mirrors and exclude visual artifacts.
+> This repository contains a Python-based processing workflow designed to test the parameters for a process to automate the detection and removal of mirror-induced "ghost points" in indoor mobile LiDAR scanning data. Current industry-standard workflows involve manually clipping and sifting through point clouds for bad data and could be significantly expedited through automation. This workflow is currently in the testing and fine-tuning stage as I evaluate algorithm performance on a significant number of point clouds.
 
 ## Data Description
-* **LiDAR Point Clouds:** Raw unstructured point clouds exported as `.las`/`.laz` (or `.e57`) files containing $(X, Y, Z)$ coordinates, intensity, and surface normals.
-* **Trajectory Data:** Time-stamped spatial trajectory files ($X, Y, Z$) representing the exact path of the mobile scanner during capture.
+> **LiDAR Point Clouds:** [`.e57`](http://www.libe57.org/) files containing $(X, Y, Z)$ point cloud coordinates with intensity and separate scanner locations for each time a panorama photograph is taken during the scan. Unlike a static scan where each point in the cloud came from a fixed source, mobile laser scanning involves capturing the same points repeatedly and keeping the best measurements, which presents unique challenges for this workflow.
 
 ## Project Status & Execution Instructions
-> **Status (June 2026):** Project repository initialized for course tracking. Pipeline logic is currently in the testing phase. Previous LiDAR workflow included for reference.
+> The core logic has been established and is currently being tested on various interior point cloud environments. The classification algorithms are sensitive to parameter tuning, and finding the best settings may require extensive testing prior to deployment. 
 
-### Currently working:
-* [x] Core directory structure and repository organization.
-* [x] Environment dependency definitions (`environment.yml`).
-* [x] Introductory steps to ingest and visualize .e57 point clouds.
-* [x] Initial classification for wall and ceiling/floor recognition.
-* [x] Recognition of doors and extension of wall planes over mirrors and small windows.
-
-
-### Not yet ready:
-* [ ] Trajectory analysis per point for ray-tracing.
-* [ ] Filtering window and mirror points.
-* [ ] Clean and well organized GitHub layout.
-
-### Running the Workflow (Future Implementation)
-Once development begins, execute the following commands to spin up the required Python environment:
-```bash
-conda env create -f environment.yml
-conda activate mirror-filter-env
-```
-
-## Data Release
-Interior LiDAR Point Cloud Data will be captured and uploaded as structured e57 data usuing mobile and static scanners on mirrors and reflective surfaces.
-Releases for public and open-source data will be added as needed. 
+## Core Dependencies
+>* ['pye57'](https://github.com/davidcaron/pye57) v0.4.19 developed by [David Caron](https://github.com/davidcaron) allows for reading and writing to .e57 files from Python instead of C++, which is the native language for the file format.
+>* [RANSAC](https://www.mathworks.com/discovery/ransac.html) is the foundational algorithm for plane detection, and the Python implementation, along with a number of helpful tools used here, was developed by [Open3D](https://github.com/isl-org/open3d).
+>* [NumPy](https://numpy.org/), [SciPy](https://scipy.org/), [Plotly](https://plotly.com/python/), and [ipywidgets](https://ipywidgets.readthedocs.io/en/stable/).
