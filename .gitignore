@@ -16,6 +16,7 @@ data/*
 .ipynb_checkpoints/
 notebooks/old_*.ipynb
 notebooks/archive/
+notebooks/output
 
 # ==============================================================================
 # Python Runtime, Virtual Envs & Build Output

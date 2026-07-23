@@ -78,6 +78,8 @@ def plot_downsampled_3d(
     # Display
     fig.show()
 
+    return fig
+
 def visualize_fixed_top_down_intensity_slice(
     z_center: float,
     raw_points: np.ndarray,
@@ -579,6 +581,8 @@ def plot_trajectory_and_walls(
 
     fig.show()
 
+    return fig
+
 
 def visualize_classification_progress(
     down_points: np.ndarray,
@@ -680,6 +684,8 @@ def visualize_classification_progress(
     )
     
     fig.show(config={"displayModeBar": False})
+
+    return fig
 
 
 

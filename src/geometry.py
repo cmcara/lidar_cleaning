@@ -32,6 +32,8 @@ def extract_structural_planes(
     min_plane_area_m2: float = 0.6,
     min_horizontal_area: float = 30.0,
     max_skips: int = 20,
+    num_iter: int=10000,
+
 ):
     """
     Extracts structural planes (walls, floors, ceilings) from a point cloud using iterative RANSAC.
@@ -42,6 +44,7 @@ def extract_structural_planes(
         min_plane_area_m2 (float, optional): Minimum required area in square meters for a valid plane. Defaults to 0.6.
         min_horizontal_area (float, optional): Minimum area in square meters required for horizontal surfaces. Defaults to 30.0.
         max_skips (int, optional): Maximum consecutive skipped planes allowed before exiting. Defaults to 20.
+        num_inter (int, optional): Maximum number of iterations RANSAC will run. Defaults to 5000.
 
     Returns:
         tuple[list[np.ndarray], list[np.ndarray]]: 
@@ -65,7 +68,7 @@ def extract_structural_planes(
         plane_model, inliers = active_pcd.segment_plane(
             distance_threshold=voxel_size,
             ransac_n=3,
-            num_iterations=5000,
+            num_iterations=num_iter,
         )
 
         A, B, C, D = plane_model
